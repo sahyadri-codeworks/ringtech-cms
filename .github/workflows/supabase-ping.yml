@@ -1,0 +1,23 @@
+name: Supabase Keep Alive Ping
+
+on:
+  schedule:
+    # Runs at 00:00 every 3rd day of the month
+    - cron: '0 0 */3 * *'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase Database
+        env:
+          SUPABASE_URL: 'https://xxjljkirxnqbzpnwvgbs.supabase.co'
+          SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4amxqa2lyeG5xYnpwbnd2Z2JzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDY4NTksImV4cCI6MjA5MzAyMjg1OX0.pxFm2Mm36vGK8H2eAtC9OnD60Wcg72Pa95wcdMyCjLY'
+        run: |
+          echo "Pinging Supabase to prevent project pause..."
+          curl -s -X GET "${SUPABASE_URL}/rest/v1/posts?select=id&limit=1" \
+          -H "apikey: ${SUPABASE_ANON_KEY}" \
+          -H "Authorization: Bearer ${SUPABASE_ANON_KEY}"
+          echo -e "\nSupabase pinged successfully!"
